@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizgame/const/text_styles.dart';
+import 'package:quizgame/results.dart';
 import 'package:quizgame/service/opentdbApi_service.dart';
 
 import 'const/colors.dart';
@@ -23,6 +24,7 @@ class _QuizScreenState extends State<QuizScreen> {
   late Future quiz;
   var isLoaded = false;
   var optionsList = [];
+  var points = 0;
   var optionsColor = [
     Colors.white,
     Colors.white,
@@ -35,7 +37,7 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState(){
     super.initState();
     quiz = getQuiz();
-    starTimer();
+    startTimer();
   }
 
   @override
@@ -44,16 +46,35 @@ class _QuizScreenState extends State<QuizScreen> {
     super.dispose();
   }
 
-  starTimer(){
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  startTimer(){
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if(seconds > 0){
+        if (seconds > 0) {
           seconds--;
-        }else{
-          timer.cancel();
+        } else {
+          gotoNextQuestion();
         }
       });
     });
+  }
+
+  gotoNextQuestion() {
+    isLoaded = false;
+    currentQuestionIndex++;
+    resetColors();
+    timer!.cancel();
+    seconds = 60;
+    startTimer();
+  }
+
+  resetColors(){
+    optionsColor = [
+      Colors.white,
+      Colors.white,
+      Colors.white,
+      Colors.white,
+      Colors.white,
+    ];
   }
 
   @override
@@ -132,11 +153,10 @@ class _QuizScreenState extends State<QuizScreen> {
                                     color: Colors.white, size: 18), 
                                     label: normalText(color: Colors.white, size: 14, text: 'Like'),
                                   ),
-                      
                                 )
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Image.asset(ideas, width: 200),
                             const SizedBox(height: 20),
                             Align(
@@ -156,8 +176,17 @@ class _QuizScreenState extends State<QuizScreen> {
                                     setState(() {
                                       if(answer == optionsList[index].toString()){
                                       optionsColor[index] = Colors.green;
+                                      points = points + 1;
                                       }else{
                                         optionsColor[index] = Colors.red;
+                                      }
+                                      if(currentQuestionIndex < data.length - 1){
+                                        Future.delayed(Duration(seconds: 1), () {
+                                        gotoNextQuestion();
+                                      });
+                                      }else{
+                                        timer!.cancel();
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => const ResultsScreen()));
                                       }
                                     });
                                   },
