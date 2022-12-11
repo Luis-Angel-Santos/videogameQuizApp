@@ -21,6 +21,15 @@ class _QuizScreenState extends State<QuizScreen> {
   Timer? timer;
   var currentQuestionIndex = 0;
   late Future quiz;
+  var isLoaded = false;
+  var optionsList = [];
+  var optionsColor = [
+    Colors.white,
+    Colors.white,
+    Colors.white,
+    Colors.white,
+    Colors.white,
+  ];
 
   @override
   void initState(){
@@ -67,9 +76,16 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: ,
+              future: quiz,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if(snapshot.hasData){
+                  var data = snapshot.data['results'];
+                  if(isLoaded == false){
+                    optionsList = data[currentQuestionIndex]['incorrect_answers'];
+                    optionsList.add(data[currentQuestionIndex]['correct_answer']);
+                    optionsList.shuffle();
+                    isLoaded = true;
+                  }
                   return Column(
                           children: [
                             Row(
@@ -125,14 +141,14 @@ class _QuizScreenState extends State<QuizScreen> {
                             const SizedBox(height: 20),
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: normalText(color: lightgrey, size: 18, text: 'Question ${currentQuestionIndex + 1} of 40'),
+                              child: normalText(color: lightgrey, size: 18, text: 'Question ${currentQuestionIndex + 1} of ${data.length}'),
                             ),
                             const SizedBox(height: 20),
-                            headingText(color: Colors.white, size: 20, text: '10 + 10?'),
+                            headingText(color: Colors.white, size: 20, text: data[currentQuestionIndex]['question']),
                             const SizedBox(height: 20),
                             ListView.builder(
                               shrinkWrap: true,
-                              itemCount: 4,
+                              itemCount: optionsList.length,
                               itemBuilder: (BuildContext context, int index){
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 20),
@@ -140,16 +156,17 @@ class _QuizScreenState extends State<QuizScreen> {
                                   width: size.width - 100,
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    color: Colors.white, borderRadius: BorderRadius.circular(12),
+                                    color: optionsColor[index], 
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child: headingText(color: blue, size: 18, text: '20')
+                                  child: headingText(color: blue, size: 18, text: optionsList[index].toString()) 
                                 );
                               }
                             )
                           ]
                         );
                 }else{
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(Colors.white),
                     ),
