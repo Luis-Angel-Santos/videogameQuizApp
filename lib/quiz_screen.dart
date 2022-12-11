@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizgame/const/text_styles.dart';
@@ -14,8 +16,22 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
 
+  @override
+  void initState(){
+    super.initState();
+    starTimer();
+  }
+
   int seconds = 60;
-  
+  Timer? timer;
+
+  starTimer(){
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        seconds--;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
