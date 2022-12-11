@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizgame/const/text_styles.dart';
+import 'package:quizgame/quiz_screen.dart';
 import 'const/images.dart';
 import 'const/colors.dart';
 
@@ -74,18 +77,22 @@ class QuizApp extends StatelessWidget{
                 size: 16, 
                 text: "Do you feel confident? Here you'll face our most difficult questions!"),
               const Spacer(),
-
               Align(
                 alignment: Alignment.center,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  alignment: Alignment.center,
-                  width: size.width - 100,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: BorderRadius.circular(12),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen()));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    alignment: Alignment.center,
+                    width: size.width - 100,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: headingText(color: blue, size: 18, text: 'Continue')
                   ),
-                  child: headingText(color: blue, size: 18, text: 'Continue')
                 ),
               )
             ],
