@@ -150,16 +150,28 @@ class _QuizScreenState extends State<QuizScreen> {
                               shrinkWrap: true,
                               itemCount: optionsList.length,
                               itemBuilder: (BuildContext context, int index){
-                                return Container(
-                                  margin: const EdgeInsets.only(bottom: 20),
-                                  alignment: Alignment.center,
-                                  width: size.width - 100,
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: optionsColor[index], 
-                                    borderRadius: BorderRadius.circular(12),
+                                var answer = data[currentQuestionIndex]['correct_answer'];
+                                return GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      if(answer == optionsList[index].toString()){
+                                      optionsColor[index] = Colors.green;
+                                      }else{
+                                        optionsColor[index] = Colors.red;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(bottom: 20),
+                                    alignment: Alignment.center,
+                                    width: size.width - 100,
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: optionsColor[index], 
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: headingText(color: blue, size: 18, text: optionsList[index].toString()) 
                                   ),
-                                  child: headingText(color: blue, size: 18, text: optionsList[index].toString()) 
                                 );
                               }
                             )
