@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizgame/const/text_styles.dart';
 import 'package:quizgame/main.dart';
 import 'package:quizgame/service/opentdbApi_service.dart';
-
 import 'const/colors.dart';
 import 'const/images.dart';
+
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  final music = AudioPlayer();
   int seconds = 30;
   Timer? timer;
   var currentQuestionIndex = 0;
@@ -51,6 +53,7 @@ class _QuizScreenState extends State<QuizScreen> {
         if (seconds > 0) {
           seconds--;
         } else {
+          timer!.cancel();
           gotoNextQuestion();
         }
       });
@@ -174,18 +177,62 @@ class _QuizScreenState extends State<QuizScreen> {
                                   onTap: (){
                                     setState(() {
                                       if(answer == optionsList[index].toString()){
+                                        music.play(AssetSource('correcta.mp3'));
                                         optionsColor[index] = Colors.green;
                                         points = points + 1;
                                       }else{
+                                        music.play(AssetSource('error.mp3'));
                                         optionsColor[index] = Colors.red;
                                       }
                                       if(currentQuestionIndex < data.length - 1){
                                         Future.delayed(Duration(seconds: 1), () {
-                                        gotoNextQuestion();
+                                          gotoNextQuestion();
                                       });
                                       }else{
                                         timer!.cancel();
-                                        showScore(context, points);
+                                        showDialog(
+                                          context: context, 
+                                          barrierDismissible: false, 
+                                          builder: (BuildContext context) { 
+                                            return Dialog(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          SizedBox(height: 12),
+                                                          headingText(color: Colors.black, size: 20, text: 'Game Over!'),
+                                                          SizedBox(height: 12),
+                                                          normalText(color: Colors.black, size: 18, text: 'Finished game. Your score is $points'),
+                                                          SizedBox(height: 20),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                            children: [
+                                                              TextButton(
+                                                            child: Text('Play Again'),
+                                                            onPressed: () => {
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen())),
+                                                            }
+                                                          ),
+                                                            TextButton(
+                                                              child: Text('Home'),
+                                                              onPressed: () => {
+                                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp())),
+                                                              }
+                                                            )
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 12),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                          },
+                                        );
                                       }
                                     });
                                   },
@@ -229,47 +276,6 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 }
-
-
-void showScore(BuildContext context, points) => showDialog(
-  context: context, 
-  barrierDismissible: false, 
-  builder: (BuildContext context) { 
-    return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 12),
-                  headingText(color: Colors.black, size: 20, text: 'Game Over!'),
-                  SizedBox(height: 12),
-                  normalText(color: Colors.black, size: 18, text: 'Finished game. Your score is $points'),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                    child: Text('Play Again'),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen())),
-                  ),
-                    TextButton(
-                      child: Text('Home'),
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp())),
-                    )
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                ],
-              ),
-            ),
-          );
-  },
-);
 
 void showInfo(BuildContext context) => showDialog(
   context: context, 

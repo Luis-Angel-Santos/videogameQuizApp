@@ -1,16 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quizgame/const/text_styles.dart';
 import 'package:quizgame/quiz_screen.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
+
 import 'const/images.dart';
 import 'const/colors.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final musicHome = AudioPlayer();
 
     
 class MyApp extends StatelessWidget {
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
         Colors.yellow,
         Colors.red,
       ],
-      backgroundColor: blue,
+      backgroundColor: Colors.white,
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -53,6 +57,7 @@ class QuizApp extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     var size = MediaQuery.of(context).size;
+    musicHome.play(AssetSource('musicHome.mp3'));
 
     return Scaffold(
       body: SafeArea(
@@ -100,6 +105,7 @@ class QuizApp extends StatelessWidget{
                 alignment: Alignment.center,
                 child: GestureDetector(
                   onTap: (){
+                    musicHome.stop();
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen()));
                   },
                   child: Container(
@@ -113,7 +119,7 @@ class QuizApp extends StatelessWidget{
                     child: headingText(color: blue, size: 18, text: 'Start')
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
