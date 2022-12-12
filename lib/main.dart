@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quizgame/const/text_styles.dart';
 import 'package:quizgame/quiz_screen.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 import 'const/images.dart';
 import 'const/colors.dart';
 
@@ -15,12 +15,29 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Widget splashScreen = SplashScreenView(
+      navigateRoute: const QuizApp(),
+      duration: 5000,
+      imageSize: 130,
+      imageSrc: "assets/icon.jpg",
+      text: "Videogames Quiz",
+      textType: TextType.ColorizeAnimationText,
+      textStyle: TextStyle(
+        fontSize: 40.0,
+      ),
+      colors: [
+        Colors.purple,
+        Colors.blue,
+        Colors.yellow,
+        Colors.red,
+      ],
+      backgroundColor: Colors.white,
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const QuizApp(),
+      home: splashScreen,
       theme: ThemeData(
         fontFamily: 'quick',
       ),
@@ -28,7 +45,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 class QuizApp extends StatelessWidget{
   const QuizApp({Key? key}) : super(key: key);

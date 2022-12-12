@@ -37,10 +37,20 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http:
+  splash_screen_view: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.11.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.jpg"
+  web:
+    generate: true
+    image_path: "assets/icon.jpg"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -90,3 +100,32 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+splash_screen_view:
+  # Use color to set the background of your splash screen to a solid color.
+  # Use background_image to set the background of your splash screen to a png image.
+  # This is useful for gradients. The image will be stretch to the  size of the app.
+  # Only one parameter can be used, color and background_image cannot both be set.
+
+  color: "#ffffff"
+  #background_image: "assets/splashscreen_image.png"
+
+  # Optional parameters are listed below.
+  image: assets/icon.jpg
+
+  #color_dark: "#042a49"
+  #background_image_dark: "assets/dark-background.png"
+  #image_dark: assets/splash-invert.png
+
+  #android: false
+  #ios: false
+  #web: false
+
+  #android_gravity: center
+  #ios_content_mode: center
+  #web_image_mode: center
+
+  fullscreen: true
+
+  #info_plist_files:
+  #  - 'ios/Runner/Info-Debug.plist'
+  #  - 'ios/Runner/Info-Release.plist'
