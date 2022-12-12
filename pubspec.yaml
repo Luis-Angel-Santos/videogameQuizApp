@@ -47,10 +47,10 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon.jpg"
+  image_path: "assets/balloon.png"
   web:
     generate: true
-    image_path: "assets/icon.jpg"
+    image_path: "assets/balloon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -110,7 +110,7 @@ splash_screen_view:
   #background_image: "assets/splashscreen_image.png"
 
   # Optional parameters are listed below.
-  image: assets/icon.jpg
+  image: assets/balloon.png
 
   #color_dark: "#042a49"
   #background_image_dark: "assets/dark-background.png"

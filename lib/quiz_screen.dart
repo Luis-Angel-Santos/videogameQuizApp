@@ -17,7 +17,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  int seconds = 60;
+  int seconds = 30;
   Timer? timer;
   var currentQuestionIndex = 0;
   late Future quiz;
@@ -62,7 +62,7 @@ class _QuizScreenState extends State<QuizScreen> {
     currentQuestionIndex++;
     resetColors();
     timer!.cancel();
-    seconds = 60;
+    seconds = 30;
     startTimer();
   }
 
@@ -135,7 +135,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                       width: 80,
                                       height: 80,
                                       child: CircularProgressIndicator(
-                                        value: seconds/60,
+                                        value: seconds/30,
                                         valueColor: AlwaysStoppedAnimation(Colors.white),
                                       ),
                                     )
@@ -147,10 +147,10 @@ class _QuizScreenState extends State<QuizScreen> {
                                     border: Border.all(color: lightgrey, width: 2)
                                   ),
                                   child: TextButton.icon(
-                                    onPressed: null, 
-                                    icon: Icon(CupertinoIcons.heart_fill, 
+                                    onPressed: (){ showInfo(context); }, 
+                                    icon: Icon(CupertinoIcons.question, 
                                     color: Colors.white, size: 18), 
-                                    label: normalText(color: Colors.white, size: 14, text: 'Like'),
+                                    label: normalText(color: Colors.white, size: 14, text:'Help'),
                                   ),
                                 )
                               ],
@@ -174,8 +174,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                   onTap: (){
                                     setState(() {
                                       if(answer == optionsList[index].toString()){
-                                      optionsColor[index] = Colors.green;
-                                      points = points + 1;
+                                        optionsColor[index] = Colors.green;
+                                        points = points + 1;
                                       }else{
                                         optionsColor[index] = Colors.red;
                                       }
@@ -206,10 +206,19 @@ class _QuizScreenState extends State<QuizScreen> {
                           ]
                         );
                 }else{
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
-                    ),
+                  return Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 80,
+                                      height: 80,
+                                      child: CircularProgressIndicator(
+                                        
+                                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                                      ),
+                                    )
+                                  ]
+                                
                   );
                 }
               },
@@ -239,16 +248,55 @@ void showScore(BuildContext context, points) => showDialog(
                   SizedBox(height: 12),
                   headingText(color: Colors.black, size: 20, text: 'Game Over!'),
                   SizedBox(height: 12),
-                  normalText(color: lightgrey, size: 18, text: 'Finished game. Your score is $points'),
-                  SizedBox(height: 12),
-                  ElevatedButton(
+                  normalText(color: Colors.black, size: 18, text: 'Finished game. Your score is $points'),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
                     child: Text('Play Again'),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen())),
                   ),
-                  ElevatedButton(
-                    child: Text('Home'),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp())),
-                  )
+                    TextButton(
+                      child: Text('Home'),
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp())),
+                    )
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                ],
+              ),
+            ),
+          );
+  },
+);
+
+void showInfo(BuildContext context) => showDialog(
+  context: context, 
+  barrierDismissible: false, 
+  builder: (BuildContext context) { 
+    return Dialog(
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 12),
+                  headingText(color: Colors.black, size: 20, text: 'How play?'),
+                  SizedBox(height: 12),
+                  normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'You hace 30 seconds to answer each question and at the end of the game your score will appear.'),
+                  SizedBox(height: 12),
+                  normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'Good luck!!'),
+                  SizedBox(height: 12),
+                  TextButton(
+                    child: Text('Back to game'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                 ],
               ),
             ),

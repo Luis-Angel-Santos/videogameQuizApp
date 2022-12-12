@@ -12,6 +12,7 @@ void main() {
   runApp(const MyApp());
 }
 
+    
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -20,8 +21,8 @@ class MyApp extends StatelessWidget {
     Widget splashScreen = SplashScreenView(
       navigateRoute: const QuizApp(),
       duration: 5000,
-      imageSize: 130,
-      imageSrc: "assets/icon.jpg",
+      imageSize: 200,
+      imageSrc: "assets/balloon.png",
       text: "Videogames Quiz",
       textType: TextType.ColorizeAnimationText,
       textStyle: TextStyle(
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         Colors.yellow,
         Colors.red,
       ],
-      backgroundColor: Colors.white,
+      backgroundColor: blue,
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -51,7 +52,6 @@ class QuizApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -113,7 +113,7 @@ class QuizApp extends StatelessWidget{
                     child: headingText(color: blue, size: 18, text: 'Start')
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
