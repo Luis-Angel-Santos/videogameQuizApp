@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizgame/const/text_styles.dart';
-import 'package:quizgame/results.dart';
+import 'package:quizgame/main.dart';
 import 'package:quizgame/service/opentdbApi_service.dart';
 
 import 'const/colors.dart';
@@ -119,7 +118,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   ),
                                   child: IconButton(
                                     onPressed: (){
-                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp()));
                                     },
                                     icon: const Icon(
                                       CupertinoIcons.return_icon,
@@ -186,7 +185,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                       });
                                       }else{
                                         timer!.cancel();
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => const ResultsScreen()));
+                                        showScore(context, points);
                                       }
                                     });
                                   },
@@ -221,3 +220,38 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 }
+
+
+void showScore(BuildContext context, points) => showDialog(
+  context: context, 
+  barrierDismissible: false, 
+  builder: (BuildContext context) { 
+    return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 12),
+                  headingText(color: Colors.black, size: 20, text: 'Game Over!'),
+                  SizedBox(height: 12),
+                  normalText(color: lightgrey, size: 18, text: 'Finished game. Your score is $points'),
+                  SizedBox(height: 12),
+                  ElevatedButton(
+                    child: Text('Play Again'),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen())),
+                  ),
+                  ElevatedButton(
+                    child: Text('Home'),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp())),
+                  )
+                ],
+              ),
+            ),
+          );
+  },
+);

@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quizgame/const/text_styles.dart';
 import 'package:quizgame/quiz_screen.dart';
 import 'const/images.dart';
@@ -59,7 +60,9 @@ class QuizApp extends StatelessWidget{
                   border: Border.all(color: lightgrey, width: 2)
                 ),
                 child: IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
                   icon: const Icon(
                     CupertinoIcons.xmark,
                     color: Colors.white,
@@ -69,13 +72,13 @@ class QuizApp extends StatelessWidget{
               ),
               Image.asset(balloon2),
               const SizedBox(height: 20),
-              normalText(color: lightgrey, size: 18, text: 'Welcome to our'),
-              headingText(color: Colors.white, size: 32, text: 'Quiz App'),
+              normalText(color: lightgrey, size: 18, text: 'Welcome to'),
+              headingText(color: Colors.white, size: 32, text: 'Videogames Quiz App'),
               const SizedBox(height: 20),
               normalText(
                 color: lightgrey,
                 size: 16, 
-                text: "Do you feel confident? Here you'll face our most difficult questions!"),
+                text: "Do you feel confident about your knowledge of video games? Try answering these questions"),
               const Spacer(),
               Align(
                 alignment: Alignment.center,
@@ -91,7 +94,7 @@ class QuizApp extends StatelessWidget{
                     decoration: BoxDecoration(
                       color: Colors.white, borderRadius: BorderRadius.circular(12),
                     ),
-                    child: headingText(color: blue, size: 18, text: 'Continue')
+                    child: headingText(color: blue, size: 18, text: 'Start')
                   ),
                 ),
               )
