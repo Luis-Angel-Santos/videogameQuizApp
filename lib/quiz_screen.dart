@@ -18,6 +18,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  final musicBack = AudioPlayer();
   final music = AudioPlayer();
   int seconds = 30;
   Timer? timer;
@@ -39,12 +40,14 @@ class _QuizScreenState extends State<QuizScreen> {
     super.initState();
     quiz = getQuiz();
     startTimer();
+    musicBack.play(AssetSource('quiz.mp3'));
   }
 
   @override
   void dispose(){
     timer!.cancel();
     super.dispose();
+    musicBack.stop();
   }
 
   startTimer(){
@@ -81,7 +84,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -121,7 +123,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                   ),
                                   child: IconButton(
                                     onPressed: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp()));
+                                      musicBack.stop()
+                                        .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => QuizApp())));  
                                     },
                                     icon: const Icon(
                                       CupertinoIcons.return_icon,
@@ -189,6 +192,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                           gotoNextQuestion();
                                       });
                                       }else{
+                                        music.play(AssetSource('fin.mp3'));
                                         timer!.cancel();
                                         showDialog(
                                           context: context, 
@@ -215,13 +219,15 @@ class _QuizScreenState extends State<QuizScreen> {
                                                               TextButton(
                                                             child: Text('Play Again'),
                                                             onPressed: () => {
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen())),
+                                                              musicBack.stop()
+                                                                .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen()))),
                                                             }
                                                           ),
                                                             TextButton(
                                                               child: Text('Home'),
                                                               onPressed: () => {
-                                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizApp())),
+                                                               musicBack.stop()
+                                                                .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => QuizApp()))),
                                                               }
                                                             )
                                                             ],
@@ -254,18 +260,16 @@ class _QuizScreenState extends State<QuizScreen> {
                         );
                 }else{
                   return Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 80,
-                                      height: 80,
-                                      child: CircularProgressIndicator(
-                                        
-                                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                                      ),
-                                    )
-                                  ]
-                                
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        ),
+                      )
+                    ]            
                   );
                 }
               },
@@ -295,7 +299,7 @@ void showInfo(BuildContext context) => showDialog(
                   SizedBox(height: 12),
                   headingText(color: Colors.black, size: 20, text: 'How play?'),
                   SizedBox(height: 12),
-                  normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'You hace 30 seconds to answer each question and at the end of the game your score will appear.'),
+                  normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'You have 30 seconds to answer each question and at the end of the game your score will appear.'),
                   SizedBox(height: 12),
                   normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'Good luck!!'),
                   SizedBox(height: 12),

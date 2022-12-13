@@ -13,9 +13,6 @@ import 'const/colors.dart';
 void main() {
   runApp(const MyApp());
 }
-
-final musicHome = AudioPlayer();
-
     
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -57,6 +54,8 @@ class QuizApp extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     var size = MediaQuery.of(context).size;
+    final musicHome = AudioPlayer();
+    musicHome.stop();
     musicHome.play(AssetSource('musicHome.mp3'));
 
     return Scaffold(
@@ -106,7 +105,7 @@ class QuizApp extends StatelessWidget{
                 child: GestureDetector(
                   onTap: (){
                     musicHome.stop();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 20),
