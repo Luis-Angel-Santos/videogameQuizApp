@@ -1,16 +1,10 @@
-# quizgame
+# Videogames Quiz App
 
-A new Flutter project.
+Minijuego de preguntas y respuestas haciendo uso de:
 
-## Getting Started
+- Flutter
+- API [OpenTDB](https://opentdb.com/)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ ## Ver resultado
+ 
+ Para ver el resultado clona el proyecto y ejecutalo con flutter y un dispositivo fisico o emulador :)
