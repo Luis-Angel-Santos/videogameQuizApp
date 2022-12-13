@@ -39,6 +39,8 @@ dependencies:
   http:
   splash_screen_view: ^3.0.0
   audioplayers: ^1.1.1
+  url_launcher: ^6.1.7
+  font_awesome_flutter: ^10.3.0
 
 dev_dependencies:
   flutter_test:

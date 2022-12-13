@@ -6,17 +6,20 @@ import 'package:flutter/services.dart';
 import 'package:quizgame/const/text_styles.dart';
 import 'package:quizgame/quiz_screen.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'const/images.dart';
 import 'const/colors.dart';
 
 void main() {
   runApp(const MyApp());
 }
+  
+final Uri _github = Uri.parse('https://github.com/Luis-Angel-Santos/');
+final Uri _linkedin = Uri.parse('https://www.linkedin.com/in/dev-web-jr-luisangelsantos/');
     
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     Widget splashScreen = SplashScreenView(
@@ -74,21 +77,42 @@ class QuizApp extends StatelessWidget{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  border: Border.all(color: lightgrey, width: 2)
-                ),
-                child: IconButton(
-                  onPressed: (){
-                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                  },
-                  icon: const Icon(
-                    CupertinoIcons.xmark,
-                    color: Colors.white,
-                    size: 20,
-                  )
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(color: lightgrey, width: 2)
+                    ),
+                    child: IconButton(
+                      onPressed: (){
+                        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                      },
+                      icon: const Icon(
+                        CupertinoIcons.xmark,
+                        color: Colors.white,
+                        size: 20,
+                      )
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(color: lightgrey, width: 2)
+                    ),
+                    child: IconButton(
+                      onPressed: (){
+                        showInfo(context);
+                      },
+                      icon: const Icon(
+                        CupertinoIcons.info,
+                        color: Colors.white,
+                        size: 20,
+                      )
+                    ),
+                  ),
+                ]
               ),
               Image.asset(balloon2),
               const SizedBox(height: 20),
@@ -126,3 +150,71 @@ class QuizApp extends StatelessWidget{
     );
   }
 }
+
+void showInfo(BuildContext context) => showDialog(
+  context: context, 
+  barrierDismissible: false, 
+  builder: (BuildContext context) { 
+    return Dialog(
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(color: Colors.red, width: 2)
+                        ),
+                        child: IconButton(
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.xmark,
+                            color: Colors.red,
+                            size: 20,
+                          )
+                        ),
+                      ),
+                    ]
+                  ),
+                  SizedBox(height: 12),
+                  headingText(color: Colors.black, size: 22, text: 'Videogames Quiz App'),
+                  SizedBox(height: 12),
+                  normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'Hi! this is my videogame quiz app, I hope you enjoy it!'),
+                  SizedBox(height: 16),
+                  normalText(color: Color.fromARGB(255, 34, 34, 34), size: 18, text: 'You can follow me on:'),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton.icon(
+                        onPressed: () async { await launchUrl(_github); }, 
+                        icon: FaIcon(FontAwesomeIcons.github,  
+                        color: Colors.black, size: 25), 
+                        label: normalText(color: Colors.black, size: 18, text:'GitHub'),
+                      ),
+                      TextButton.icon(
+                        onPressed: () async { await launchUrl(_linkedin); }, 
+                        icon: FaIcon(FontAwesomeIcons.linkedin, 
+                        color: Colors.blue[800], size: 25), 
+                        label: normalText(color: Colors.blue[800], size: 18, text:'LinkedIn'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                ],
+              ),
+            ),
+          );
+  },
+);
